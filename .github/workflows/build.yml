@@ -1,1 +1,32 @@
 name: Compilar plugin
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Mac
+        if: runner.os == 'macOS'
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13
+
+      - name: Configurar Windows
+        if: runner.os == 'Windows'
+        run: cmake -B build
+
+      - name: Compilar
+        run: cmake --build build --config Release --parallel
+
+      - name: Subir el VST3
+        uses: actions/upload-artifact@v4
+        with:
+          name: IndicaGuz-${{ matrix.os }}
+          path: build/IndicaGuz_artefacts/Release/VST3
