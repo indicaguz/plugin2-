@@ -19,14 +19,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout GuzProcessor::createLayout()
 
 bool GuzProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-
-
-
-
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
-    return new GuzProcessor();
-}
     return layouts.getMainOutputChannelSet() == layouts.getMainInputChannelSet()
         && (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo()
             || layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono());
@@ -98,4 +90,10 @@ void GuzEditor::resized()
     titulo.setBounds (area.removeFromTop (50));
     etiqueta.setBounds (area.removeFromBottom (24));
     slider.setBounds (area);
+}
+
+// Esta función le dice al DAW cómo crear el plugin
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+    return new GuzProcessor();
 }
