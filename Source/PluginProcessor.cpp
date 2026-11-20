@@ -19,6 +19,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout GuzProcessor::createLayout()
 
 bool GuzProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
+
+
+
+
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+    return new GuzProcessor();
+}
     return layouts.getMainOutputChannelSet() == layouts.getMainInputChannelSet()
         && (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo()
             || layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono());
